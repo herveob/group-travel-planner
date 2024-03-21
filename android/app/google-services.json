@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748107405991",
+    "project_id": "group-travel-planner-5c204",
+    "storage_bucket": "group-travel-planner-5c204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748107405991:android:602d159ff5e37d09cc1982",
+        "android_client_info": {
+          "package_name": "com.devhob.grouptravelplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyzy7KaekB1MDFSFo1vG--Olp9nP0W2PY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
