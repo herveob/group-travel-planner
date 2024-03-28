@@ -1,15 +1,14 @@
 import { useState, useEffect, FC } from 'react';
-import { View, Pressable, SafeAreaView, FlatList } from 'react-native';
+import { View, Pressable, SafeAreaView, FlatList, StyleSheet } from 'react-native';
 import { MD3Theme, withTheme } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 
 import { Member } from '../types/Member.types';
 import Header from '../components/Header';
 import MemberCard from '../components/MemberCard';
-import getMembers from '../services/member/getMembers';
+import { getMembers } from '../services/members';
 import CreateMemberModal from '../components/CreateMemberModal';
 import EditMemberModal from '../components/EditMemberModal';
-import { styles } from '../styles/MemberListScreen.styles';
 import { navBottomNavigatorHeight } from '../helpers/constants';
 
 type MemberListProps = {
@@ -82,6 +81,13 @@ const MemberList: FC<MemberListProps> = ({ theme }) => {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+});
 
 export default withTheme(MemberList);
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { MemberList, Home, Settings } from './src/screens';
+import { MemberList, Home, Settings, Login } from './src/screens';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { navBottomNavigatorHeight } from './src/helpers/constants';
 import * as Sentry from '@sentry/react-native';
 // import { AppRegistry } from 'react-native';
 import { MD3DarkTheme as DefaultTheme, PaperProvider, adaptNavigationTheme } from 'react-native-paper';
 import { expo } from './app.json';
+import useFirebaseAuth from './src/database/useFirebaseAuth';
 
 const { name: appName } = expo;
 
@@ -19,6 +19,7 @@ Sentry.init({
 });
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const { DartTheme } = adaptNavigationTheme({ reactNavigationDark: DefaultTheme });
 
@@ -69,40 +70,50 @@ const theme = {
 }
 
 const App = () => {
+  const { user, loading } = useFirebaseAuth();
+
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer theme={DartTheme}>
-        <Tab.Navigator>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="home" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="MemberList"
-            component={MemberList}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="account-multiple" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={Settings}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="cog" color={color} size={26} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
-        <StatusBar style='dark' />
-      </NavigationContainer>
+      {!loading && user
+        ? (<NavigationContainer theme={DartTheme}>
+          <Tab.Navigator>
+            <Tab.Screen
+              name="Home"
+              component={Home}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="home" color={color} size={26} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="MemberList"
+              component={MemberList}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="account-multiple" color={color} size={26} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Settings"
+              component={Settings}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons name="cog" color={color} size={26} />
+                ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>)
+        : (
+          !loading && <NavigationContainer theme={DartTheme}>
+            <Stack.Navigator>
+              <Stack.Screen name="Login" component={Login} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        )
+      }
     </PaperProvider>
   );
 }

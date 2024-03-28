@@ -1,13 +1,22 @@
 
 import { FC, useState } from 'react';
-import { View, Pressable, Text, Modal, TextInput, Alert } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { MD3Theme, withTheme, Modal, Portal, Button, Text, TextInput } from 'react-native-paper';
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 
-import MemberCategoryCheckBox from './MemberCategoryCheckbox';
-import { CreateTripModalProps } from '../types/CreateTripModal.types';
-import { createTrip } from '../services/trips/createTrip';
+import { createTrip } from '../services/trips';
+import useFirebaseAuth from '../database/useFirebaseAuth';
+import { Trip } from '../types/Trip';
+import { scale } from 'react-native-size-matters';
+
+type CreateTripModalProps = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
+  trips: Trip[];
+  theme: MD3Theme;
+};
 
 const currentUser = {
   id: '1',
@@ -15,15 +24,26 @@ const currentUser = {
   lastName: 'Doe',
 }
 
-const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisible, setTrips, trips }) => {
-  const [createTripTile, setCreateTripTile] = useState('');
+const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisible, setTrips, trips, theme }) => {
+  const styles = StyleSheet.create({
+    modalButtonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
+      padding: 20,
+      gap: scale(5),
+    },
+  });
+
+  const { user } = useFirebaseAuth();
+  const userId = user?.uid;
+  const [createTripTitle, setCreateTripTitle] = useState('');
 
   const resetStates = () => {
-    setCreateTripTile('');
+    setCreateTripTitle('');
   };
 
   const handleCreateMember = async () => {
-    if (createTripTile === '') {
+    if (createTripTitle === '') {
       return alert('Please fill in the fields')
     }
     else {
@@ -32,7 +52,7 @@ const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisib
 
       console.log({ startDate, endDate });
       // const newTrip = await createTrip({
-      //     id: uuidv4(),
+      //     id: userId,
       //     startDate,
       //     endDate,
       //     ownerId: currentUser.id,
@@ -45,37 +65,43 @@ const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisib
   }
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
-        setModalVisible(!modalVisible);
-      }}>
-      <View >
-        <View >
-          <Text >Create new trip</Text>
-          <TextInput
-            style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10 }}
-            onChangeText={text => setCreateTripTile(text)}
-            placeholder='Title'
-          />
-          <View >
-            <Pressable
-              onPress={() => handleCreateMember()}>
-              <Text >Create</Text>
-            </Pressable>
-            <Pressable
-
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text >Cancel</Text>
-            </Pressable>
-          </View>
+    <Portal>
+      <Modal
+        visible={modalVisible}
+        contentContainerStyle={{
+          backgroundColor: theme.colors.secondaryContainer,
+          padding: 20,
+          margin: 20,
+          borderRadius: 10,
+        }}
+        onDismiss={() => {
+          console.log('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <Text variant='displaySmall' style={{ textAlign: 'center' }}>Create new trip</Text>
+        <TextInput
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 10 }}
+          onChangeText={text => setCreateTripTitle(text)}
+          placeholder='Title'
+        />
+        <View style={styles.modalButtonContainer}>
+          <Button
+            icon={'wallet-travel'}
+            mode={'contained'}
+            onPress={handleCreateMember}>
+            {'Create'}
+          </Button>
+          <Button
+            buttonColor={theme.colors.tertiary}
+            icon={'cancel'}
+            mode={'contained'}
+            onPress={() => setModalVisible(!modalVisible)}>
+            {'Cancel'}
+          </Button>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </Portal>
   );
 };
 
-export default CreateTripModal;
+export default withTheme(CreateTripModal);

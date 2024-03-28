@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDd7J4UDg9sTijO4ThtTH5zsfIMzP_npxg",
   authDomain: "group-travel-planner-5c204.firebaseapp.com",
   databaseURL: "https://group-travel-planner-5c204-default-rtdb.europe-west1.firebasedatabase.app",
@@ -12,5 +12,5 @@ const firebaseConfig = {
   measurementId: "G-LGRFFMZZGW"
 };
 
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);

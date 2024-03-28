@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, Pressable } from 'react-native';
-import { withTheme } from 'react-native-paper';
+import React, { useState, useEffect, FC } from 'react';
+import { View, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { MD3Theme, withTheme } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 
-import getTrips from '../services/trips/getTrips';
+import { getTrips } from '../services/trips';
 import Header from '../components/Header';
 import CreateTripModal from '../components/CreateTripModal';
 import { navBottomNavigatorHeight } from '../helpers/constants';
 import { Trip } from '../types/Trip';
-import { styles } from '../styles/Home.styles';
-const Home = ({ theme }) => {
+
+type HomeProps = {
+  theme: MD3Theme;
+};
+
+const Home: FC<HomeProps> = ({ theme }) => {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [createTripModalVisible, setCreateTripModalVisible] = useState(false);
 
@@ -45,6 +49,13 @@ const Home = ({ theme }) => {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      alignItems: 'center',
+  },
+});
 
 export default withTheme(Home);
 

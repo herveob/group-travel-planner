@@ -3,8 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { MD3Theme, withTheme, Modal, Portal, Button, Text, TextInput } from 'react-native-paper';
 
 import MemberCategoryCheckBox from './MemberCategoryCheckbox';
-import deleteMember from '../services/member/deleteMember';
-import updateMember from '../services/member/updateMember';
+import { deleteMember, updateMember } from '../services/members';
 import { Member } from '../types/Member.types';
 import { scale } from 'react-native-size-matters';
 
@@ -107,6 +106,7 @@ const EditMemberModal: FC<EditMembersModalProps> = ({ modalVisible, setModalVisi
             {'Edit'}
           </Button>
           <Button
+            buttonColor={theme.colors.tertiary}
             icon={'cancel'}
             mode={'contained'}
             onPress={handleCancel}>

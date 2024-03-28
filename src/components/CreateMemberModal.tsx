@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 
 import MemberCategoryCheckBox from './MemberCategoryCheckbox';
 import { category } from '../types/MemberCategoryCheckBox.types';
-import { createMember } from '../services/member/createMembers';
+import { createMember } from '../services/members';
 import { Member } from '../types/Member.types';
 
 type CreateMemberModalProps = {
