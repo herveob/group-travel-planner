@@ -47,8 +47,7 @@ const MemberList: FC<MemberListProps> = ({ theme }) => {
         <MemberCard id={id} firstName={firstName} lastName={lastName} key={id} categories={categories} />
       </Pressable>
     </SafeAreaView>
-  )
-    ;
+  );
 
   return (
     <SafeAreaView style={{

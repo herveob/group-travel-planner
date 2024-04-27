@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import CreateTripModal from '../components/CreateTripModal';
 import { navBottomNavigatorHeight } from '../helpers/constants';
 import { Trip } from '../types/Trip';
+import TripList from '../components/TripList';
 
 type HomeProps = {
   theme: MD3Theme;
@@ -37,15 +38,16 @@ const Home: FC<HomeProps> = ({ theme }) => {
       flex: 1,
       paddingBottom: navBottomNavigatorHeight,
     }}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         <Header label={'Group Travel Planner'} />
         <CreateTripModal modalVisible={createTripModalVisible} setModalVisible={setCreateTripModalVisible} setTrips={setTrips} trips={trips} />
+        <TripList trips={trips} />
         <View>
           <Button icon="wallet-travel" mode="contained" onPress={() => setCreateTripModalVisible(!createTripModalVisible)}>
             Create New trip project
           </Button>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

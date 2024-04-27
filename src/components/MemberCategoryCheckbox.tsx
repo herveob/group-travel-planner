@@ -11,26 +11,7 @@ const icons = {
   ski: SkiImage,
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    gap: scale(16),
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  checkBoxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  tinyLogo: {
-    width: scale(45),
-    height: scale(45),
-  },
-});
-
 const MemberCategoryCheckBox: FC<MemberCategoryCheckBoxProps> = ({ createMemberCategories, setCreateMemberCategories }) => {
-
   const [snowboardCheck, setSnowboardCheck] = useState(createMemberCategories.includes('snowboard'));
   const [skiCheck, skiboardCheck] = useState(createMemberCategories.includes('ski'));
 
@@ -71,5 +52,23 @@ const MemberCategoryCheckBox: FC<MemberCategoryCheckBoxProps> = ({ createMemberC
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    gap: scale(16),
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  checkBoxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tinyLogo: {
+    width: scale(45),
+    height: scale(45),
+  },
+});
 
 export default MemberCategoryCheckBox;

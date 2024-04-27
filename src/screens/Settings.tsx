@@ -1,5 +1,6 @@
-import React from 'react'
-import { SafeAreaView } from 'react-native'
+import React from 'react';
+import { SafeAreaView } from 'react-native';
+import { Text } from 'react-native-paper';
 import { navBottomNavigatorHeight } from '../helpers/constants';
 import Header from '../components/Header';
 
@@ -14,7 +15,7 @@ const Settings = () => {
     }>
       <Header label={'Group Travel Planner'} />
 
-      <div>Settings</div>
+      <Text>Settings</Text>
     </SafeAreaView>
   )
 }

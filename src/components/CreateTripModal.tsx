@@ -1,19 +1,20 @@
 
-import { FC, useState } from 'react';
+import { FC, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MD3Theme, withTheme, Modal, Portal, Button, Text, TextInput } from 'react-native-paper';
 import 'react-native-get-random-values';
-import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
 import { createTrip } from '../services/trips';
 import useFirebaseAuth from '../database/useFirebaseAuth';
 import { Trip } from '../types/Trip';
 import { scale } from 'react-native-size-matters';
+import DateRangePicker, { Range } from './DateRangePicker';
 
 type CreateTripModalProps = {
   modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
+  setModalVisible: Dispatch<SetStateAction<boolean>>;
+  setTrips: Dispatch<SetStateAction<Trip[]>>;
   trips: Trip[];
   theme: MD3Theme;
 };
@@ -36,7 +37,13 @@ const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisib
 
   const { user } = useFirebaseAuth();
   const userId = user?.uid;
+  const [range, setRange] = useState<Range>({ startDate: undefined, endDate: undefined });
+  const [open, setOpen] = useState(false);
   const [createTripTitle, setCreateTripTitle] = useState('');
+
+  useEffect(() => {
+    console.log({ range });
+  }, [range]);
 
   const resetStates = () => {
     setCreateTripTitle('');
@@ -47,20 +54,24 @@ const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisib
       return alert('Please fill in the fields')
     }
     else {
-      const startDate = moment().format('DD/MM/YY').toLocaleString();
-      const endDate = moment().add(7, 'days').format('DD/MM/YY').toLocaleString();
+      const locale = 'fr-FR';
+      const timeZone = 'UTC';
+      const startDate = range.startDate?.toLocaleString(locale, { timeZone });
+      const endDate = range.endDate?.toLocaleString(locale, { timeZone });
 
-      console.log({ startDate, endDate });
-      // const newTrip = await createTrip({
-      //     id: userId,
-      //     startDate,
-      //     endDate,
-      //     ownerId: currentUser.id,
-      //     members: [],
-      // });
-      // setTrips([...trips, newTrip])
-      setModalVisible(!modalVisible)
-      resetStates();
+      if (startDate && endDate && userId) {
+        const newTrip = await createTrip({
+          id: uuidv4(),
+          title: createTripTitle,
+          startDate,
+          endDate,
+          ownerId: userId,
+          members: [],
+        });
+        setTrips([...trips, newTrip])
+        setModalVisible(!modalVisible)
+        resetStates();
+      }
     }
   }
 
@@ -84,6 +95,7 @@ const CreateTripModal: FC<CreateTripModalProps> = ({ modalVisible, setModalVisib
           onChangeText={text => setCreateTripTitle(text)}
           placeholder='Title'
         />
+        <DateRangePicker range={range} setRange={setRange} open={open} setOpen={setOpen} />
         <View style={styles.modalButtonContainer}>
           <Button
             icon={'wallet-travel'}

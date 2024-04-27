@@ -32,9 +32,6 @@ const MemberCard: FC<MemberCardProps> = ({ firstName, lastName, categories, them
       width: scale(45),
       height: scale(45),
     },
-    fullname: {
-      fontSize: scale(12),
-    }
   });
   const icons = {
     snowboard: SnowboardImage,

@@ -8,11 +8,14 @@ import * as Sentry from '@sentry/react-native';
 // import { AppRegistry } from 'react-native';
 import { MD3DarkTheme as DefaultTheme, PaperProvider, adaptNavigationTheme } from 'react-native-paper';
 import { expo } from './app.json';
+import { fr, registerTranslation } from 'react-native-paper-dates'
 import useFirebaseAuth from './src/database/useFirebaseAuth';
 
-const { name: appName } = expo;
+registerTranslation('fr', fr)
 
-console.log({ appName });
+// const { name: appName } = expo;
+
+// console.log({ appName });
 
 Sentry.init({
   dsn: 'https://87ad9f299ecd87243094429940c4377b@o4506949305630720.ingest.us.sentry.io/4506949306679296',
